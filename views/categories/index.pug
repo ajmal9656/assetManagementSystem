@@ -1,0 +1,54 @@
+extends ../layouts/layout
+
+block content
+
+    h2.mb-4 Asset Categories
+
+    .card
+
+        .card-body
+
+            .mb-3.text-end
+
+                a.btn.btn-success(
+                    href="/categories/create"
+                )
+                    | Add Category
+
+            table.table.table-bordered.table-hover
+
+                thead.table-light
+
+                    tr
+                        th(width="80") #
+                        th Category Name
+                        th Description
+                        th(width="120") Action
+
+                tbody
+
+                    if categories && categories.length
+
+                        each category, index in categories
+
+                            tr
+
+                                td= index + 1
+
+                                td= category.name
+
+                                td= category.description
+
+                                td
+
+                                    a.btn.btn-sm.btn-warning(
+                                        href=`/categories/edit/${category.id}`
+                                    )
+                                        | Edit
+
+                    else
+
+                        tr
+
+                            td.text-center(colspan="4")
+                                | No categories found.

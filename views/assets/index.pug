@@ -1,0 +1,179 @@
+extends ../layouts/layout
+
+block content
+
+    h2.mb-4 Asset Management
+
+    .card
+
+        .card-body
+
+            .d-flex.justify-content-between.align-items-center.mb-3
+
+                h5.mb-0 Asset List
+
+                a.btn.btn-success(
+                    href="/assets/create"
+                )
+                    | Add Asset
+
+            form(action="/assets" method="GET")
+
+                .row.mb-3
+
+                    .col-md-4
+
+                        input.form-control(
+                            type="text"
+                            name="search"
+                            placeholder="Search Make / Model / Serial No"
+                            value=search
+                        )
+
+                    .col-md-3
+
+                        select.form-select(name="categoryId")
+
+                            option(value="") All Categories
+
+                            each category in categories
+
+                                option(
+                                    value=category.id
+                                    selected=categoryId == category.id
+                                )= category.name
+
+                    .col-md-3
+
+                        select.form-select(name="status")
+
+                            option(value="" selected=!status)
+                                | All Status
+
+                            each assetStatus in assetStatuses
+
+                                option(
+                                    value=assetStatus
+                                    selected=status == assetStatus
+                                )= assetStatus
+
+                    .col-md-2
+
+                        button.btn.btn-primary.w-100(type="submit")
+                            | Search
+
+            table.table.table-bordered.table-hover
+
+                thead.table-light
+
+                    tr
+                        th Asset Code
+                        th Serial Number
+                        th Category
+                        th Make
+                        th Model
+                        th Status
+                        th(width="220") Actions
+
+                tbody
+
+                    if assets && assets.length
+
+                        each asset in assets
+
+                            tr
+
+                                td= asset.assetCode
+
+                                td= asset.serialNumber
+
+                                td= asset.category ? asset.category.name : "-"
+
+                                td= asset.make
+
+                                td= asset.model
+
+                                td= asset.status
+
+                                td
+
+                                    if asset.status === "IN_STOCK"
+
+                                        a.btn.btn-sm.btn-warning.me-1(
+                                            href=`/assets/edit/${asset.id}`
+                                        )
+                                            | Edit
+
+                                        button.btn.btn-sm.btn-primary.me-1(
+                                            type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target=`#issueAsset${asset.id}`
+                                        )
+                                            | Issue
+
+                                        button.btn.btn-sm.btn-danger(
+                                            type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target=`#scrapAsset${asset.id}`
+                                        )
+                                            | Scrap
+
+                                    else if asset.status === "ISSUED"
+
+                                        a.btn.btn-sm.btn-warning.me-1(
+                                            href=`/assets/edit/${asset.id}`
+                                        )
+                                            | Edit
+
+                                        button.btn.btn-sm.btn-info(
+                                            type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target=`#returnAsset${asset.id}`
+                                        )
+                                            | Return
+
+                                    else if asset.status === "SCRAPPED"
+
+                                        span.text-danger.fw-bold
+                                            | Scrapped
+
+                                    else
+
+                                        span.text-muted
+                                            | -
+
+                    else
+
+                        tr
+
+                            td.text-center(colspan="7")
+                                | No assets found.
+
+            .d-flex.justify-content-between.align-items-center.mt-3
+
+                if pagination.currentPage > 1
+
+                    a.btn.btn-secondary(
+                        href=`/assets?page=${pagination.currentPage-1}&search=${search}&categoryId=${categoryId}&status=${status}`
+                    )
+                        | Previous
+
+                else
+
+                    button.btn.btn-secondary(disabled)
+                        | Previous
+
+                span
+                    | Page #{pagination.currentPage} of #{pagination.totalPages}
+
+                if pagination.currentPage < pagination.totalPages
+
+                    a.btn.btn-secondary(
+                        href=`/assets?page=${pagination.currentPage+1}&search=${search}&categoryId=${categoryId}&status=${status}`
+                    )
+                        | Next
+
+                else
+
+                    button.btn.btn-secondary(disabled)
+                        | Next

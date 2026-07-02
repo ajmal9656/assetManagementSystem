@@ -1,0 +1,48 @@
+extends ../layouts/layout
+
+block content
+
+    h2.mb-4 Add Asset Category
+
+    .card
+
+        .card-body
+
+            form(action="/categories/create" method="POST")
+
+                .mb-3
+
+                    label.form-label Category Name
+
+                    input.form-control(
+                        type="text"
+                        name="name"
+                        value=(old && old.name) || ""
+                    )
+
+                    if errors && errors.name
+                        .text-danger.small= errors.name.msg
+
+                .mb-3
+
+                    label.form-label Description
+
+                    textarea.form-control(
+                        name="description"
+                        rows="4"
+                    ) #{(old && old.description) || ""}
+
+                    if errors && errors.description
+                        .text-danger.small= errors.description.msg
+
+                .d-flex.justify-content-end.gap-2
+
+                    a.btn.btn-secondary(
+                        href="/categories"
+                    )
+                        | Cancel
+
+                    button.btn.btn-success(
+                        type="submit"
+                    )
+                        | Save Category

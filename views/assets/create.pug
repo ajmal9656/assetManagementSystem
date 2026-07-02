@@ -1,0 +1,134 @@
+extends ../layouts/layout
+
+block content
+
+    h2.mb-4 Add Asset
+
+    .card
+
+        .card-body
+
+            form(action="/assets/create" method="POST")
+
+                .mb-3
+
+                    label.form-label Category
+
+                    select.form-select(name="categoryId")
+
+                        option(value="") Select Category
+
+                        each category in categories
+
+                            option(
+                                value=category.id
+                                selected=old && old.categoryId==category.id
+                            )= category.name
+
+                    if errors && errors.categoryId
+                        .text-danger.small= errors.categoryId.msg
+
+                .mb-3
+
+                    label.form-label Serial Number
+
+                    input.form-control(
+                        type="text"
+                        name="serialNumber"
+                        value=(old && old.serialNumber) || ""
+                    )
+
+                    if errors && errors.serialNumber
+                        .text-danger.small= errors.serialNumber.msg
+
+                .row
+
+                    .col-md-6
+
+                        .mb-3
+
+                            label.form-label Make
+
+                            input.form-control(
+                                type="text"
+                                name="make"
+                                value=(old && old.make) || ""
+                            )
+
+                            if errors && errors.make
+                                .text-danger.small= errors.make.msg
+
+                    .col-md-6
+
+                        .mb-3
+
+                            label.form-label Model
+
+                            input.form-control(
+                                type="text"
+                                name="model"
+                                value=(old && old.model) || ""
+                            )
+
+                            if errors && errors.model
+                                .text-danger.small= errors.model.msg
+
+                .row
+
+                    .col-md-6
+
+                        .mb-3
+
+                            label.form-label Purchase Date
+
+                            input.form-control(
+                                type="date"
+                                name="purchaseDate"
+                                value=(old && old.purchaseDate) || ""
+                                max=today 
+                            )
+
+                            if errors && errors.purchaseDate
+                                .text-danger.small= errors.purchaseDate.msg
+
+                    .col-md-6
+
+                        .mb-3
+
+                            label.form-label Purchase Price
+
+                            input.form-control(
+                                type="number"
+                                step="0.01"
+                                name="purchasePrice"
+                                value=(old && old.purchasePrice) || ""
+                            )
+
+                            if errors && errors.purchasePrice
+                                .text-danger.small= errors.purchasePrice.msg
+
+                .mb-3
+
+                    label.form-label Branch
+
+                    select.form-select(name="branch")
+
+                        option(value="") Select Branch
+
+                        each branch in branches
+
+                            option(
+                                value=branch
+                                selected=old && old.branch==branch
+                            )= branch
+
+                    if errors && errors.branch
+                        .text-danger.small= errors.branch.msg
+
+                .d-flex.justify-content-end.gap-2
+
+                    a.btn.btn-secondary(href="/assets")
+                        | Cancel
+
+                    button.btn.btn-success(type="submit")
+                        | Save Asset
