@@ -1,8 +1,9 @@
 import express from "express";
-import * as employeeController from "../controllers/employeeController.js";
 import { isAuthenticated } from "../middleware/authMiddleware.js";
+import * as dashboardController from "../controllers/dashboardController.js";
 
 const router = express.Router();
 
-router.get("/", isAuthenticated, employeeController.getEmployees);
+router.get("/", isAuthenticated, dashboardController.dashboard);
+
 export default router;

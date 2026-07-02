@@ -1,0 +1,260 @@
+extends ../layouts/layout
+
+block content
+
+    h2.mb-4 Employee Management
+
+    .card
+
+        .card-body
+
+            form(action="/employees" method="GET")
+
+                .row.mb-3
+
+                    .col-md-3
+                        input.form-control(
+                            type="text"
+                            name="search"
+                            placeholder="Search Name / Email"
+                            value=search
+                        )
+
+                    .col-md-3
+                        select.form-select(name="status")
+
+                            option(
+                                value=""
+                                selected=!status
+                            )
+                                | All Status
+
+                            option(
+                                value="ACTIVE"
+                                selected=status=="ACTIVE"
+                            )
+                                | Active
+
+                            option(
+                                value="INACTIVE"
+                                selected=status=="INACTIVE"
+                            )
+                                | Inactive
+
+                    .col-md-2
+                        button.btn.btn-primary.w-100(type="submit")
+                            | Search
+
+                    .col-md-4.text-end
+
+                        button.btn.btn-success(
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#addEmployeeModal"
+                        )
+                            | Add Employee
+
+            table.table.table-bordered.table-hover
+
+                thead.table-light
+
+                    tr
+                        th Employee Code
+                        th Name
+                        th Email
+                        th Phone
+                        th Status
+                        th(width="150") Action
+
+                tbody
+
+                    if employees && employees.length
+
+                        each employee in employees
+
+                            tr
+
+                                td= employee.employeeCode
+
+                                td #{employee.firstName} #{employee.lastName}
+
+                                td= employee.email
+
+                                td= employee.phone
+
+                                td= employee.status
+
+                                td
+
+                                    a.btn.btn-sm.btn-warning.me-2(
+                                        href=`/employees/edit/${employee.id}`
+                                    )
+                                        | Edit
+
+                                    a.btn.btn-sm.btn-danger(
+                                        href=`/employees/delete/${employee.id}`
+                                    )
+                                        | Delete
+
+                    else
+
+                        tr
+
+                            td.text-center(colspan="6")
+                                | No employees found.
+
+            .d-flex.justify-content-between.align-items-center.mt-3
+
+                if pagination.currentPage > 1
+
+                    a.btn.btn-secondary(
+                        href=`/employees?page=${pagination.currentPage-1}&search=${search}&status=${status}`
+                    )
+                        | Previous
+
+                else
+
+                    button.btn.btn-secondary(disabled)
+                        | Previous
+
+                span
+                    | Page #{pagination.currentPage} of #{pagination.totalPages}
+
+                if pagination.currentPage < pagination.totalPages
+
+                    a.btn.btn-secondary(
+                        href=`/employees?page=${pagination.currentPage+1}&search=${search}&status=${status}`
+                    )
+                        | Next
+
+                else
+
+                    button.btn.btn-secondary(disabled)
+                        | Next
+
+    // ============================
+    // Add Employee Modal
+    // ============================
+
+    .modal.fade(
+        id="addEmployeeModal"
+        tabindex="-1"
+        aria-labelledby="addEmployeeModalLabel"
+        aria-hidden="true"
+    )
+
+        .modal-dialog
+
+            .modal-content
+
+                form(action="/employees/add" method="POST")
+
+                    .modal-header
+
+                        h5.modal-title(id="addEmployeeModalLabel")
+                            | Add Employee
+
+                        button.btn-close(
+                            type="button"
+                            data-bs-dismiss="modal"
+                        )
+
+                    .modal-body
+
+                        .mb-3
+
+                            label.form-label Employee Code
+
+                            input.form-control(
+                                type="text"
+                                name="employeeCode"
+                                required
+                            )
+
+                        .row
+
+                            .col-md-6
+
+                                .mb-3
+
+                                    label.form-label First Name
+
+                                    input.form-control(
+                                        type="text"
+                                        name="firstName"
+                                        required
+                                    )
+
+                            .col-md-6
+
+                                .mb-3
+
+                                    label.form-label Last Name
+
+                                    input.form-control(
+                                        type="text"
+                                        name="lastName"
+                                        required
+                                    )
+
+                        .mb-3
+
+                            label.form-label Email
+
+                            input.form-control(
+                                type="email"
+                                name="email"
+                                required
+                            )
+
+                        .mb-3
+
+                            label.form-label Phone
+
+                            input.form-control(
+                                type="text"
+                                name="phone"
+                            )
+
+                        .mb-3
+
+                            label.form-label Designation
+
+                            input.form-control(
+                                type="text"
+                                name="designation"
+                            )
+
+                        .mb-3
+
+                            label.form-label Branch
+
+                            select.form-select(
+                                name="branch"
+                                required
+                            )
+
+                                each branch in branches
+                                    option(value=branch)= branch
+
+                        .mb-3
+
+                            label.form-label Status
+
+                            select.form-select(name="status")
+
+                                each employeeStatusValue in employeeStatus
+                                    option(value=employeeStatusValue)= employeeStatusValue
+
+                    .modal-footer
+
+                        button.btn.btn-secondary(
+                            type="button"
+                            data-bs-dismiss="modal"
+                        )
+                            | Close
+
+                        button.btn.btn-success(
+                            type="submit"
+                        )
+                            | Save Employee
