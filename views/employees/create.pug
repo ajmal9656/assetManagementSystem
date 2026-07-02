@@ -1,0 +1,107 @@
+extends ../layouts/layout
+
+block content
+
+    h2.mb-4 Add Employee
+
+    .card
+
+        .card-body
+
+            form(action="/employees/create" method="POST")
+
+                .row
+
+                    .col-md-6
+
+                        .mb-3
+
+                            label.form-label First Name
+
+                            input.form-control(
+                                type="text"
+                                name="firstName"
+                                value=(old && old.firstName) || ""
+                            )
+
+                            if errors && errors.firstName
+                                .text-danger.small= errors.firstName.msg
+
+                    .col-md-6
+
+                        .mb-3
+
+                            label.form-label Last Name
+
+                            input.form-control(
+                                type="text"
+                                name="lastName"
+                                value=(old && old.lastName) || ""
+                            )
+
+                            if errors && errors.lastName
+                                .text-danger.small= errors.lastName.msg
+
+                .mb-3
+
+                    label.form-label Email
+
+                    input.form-control(
+                        type="email"
+                        name="email"
+                        value=(old && old.email) || ""
+                    )
+
+                    if errors && errors.email
+                        .text-danger.small= errors.email.msg
+
+                .mb-3
+
+                    label.form-label Phone
+
+                    input.form-control(
+                        type="text"
+                        name="phone"
+                        value=(old && old.phone) || ""
+                    )
+
+                    if errors && errors.phone
+                        .text-danger.small= errors.phone.msg
+
+                .mb-3
+
+                    label.form-label Designation
+
+                    input.form-control(
+                        type="text"
+                        name="designation"
+                        value=(old && old.designation) || ""
+                    )
+
+                    if errors && errors.designation
+                        .text-danger.small= errors.designation.msg
+
+                .mb-3
+
+                    label.form-label Branch
+
+                    select.form-select(name="branch")
+
+                        option(value="") Select Branch
+
+                        each branch in branches
+                            option(
+                                value=branch
+                                selected=old && old.branch==branch
+                            )= branch
+
+                    if errors && errors.branch
+                        .text-danger.small= errors.branch.msg
+
+                .d-flex.justify-content-end.gap-2
+
+                    a.btn.btn-secondary(href="/employees")
+                        | Cancel
+
+                    button.btn.btn-success(type="submit")
+                        | Save Employee

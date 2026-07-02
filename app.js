@@ -13,10 +13,10 @@ const app = express();
 app.set("view engine", "pug");
 app.set("views", "./views");
 
-app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static("public"));
+
 
 app.use(
   session({
@@ -26,7 +26,7 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
     },
   })
 );

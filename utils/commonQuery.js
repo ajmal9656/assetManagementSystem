@@ -60,7 +60,6 @@ export const performModelQuery = async (modelName, operation, data) => {
   }
 };
 
-
 function prepareIncludes(includeArray, models) {
   return includeArray.map((include) => {
     if (!models[include.model]) {
@@ -79,7 +78,6 @@ function prepareIncludes(includeArray, models) {
     return resolvedInclude;
   });
 }
-
 
 function prepareOrderModels(orderArr, models) {
   return orderArr.map((orderItem) => {
@@ -279,7 +277,6 @@ export const checkFieldValueExist = async (
 
     let whereClause = {
       [field]: typeof value === "string" ? value.trim() : value,
-      deleted_at: { [Op.is]: null },
     };
 
     if (Object.keys(extraCondition).length) {

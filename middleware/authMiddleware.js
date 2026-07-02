@@ -13,7 +13,7 @@ export const isAuthenticated = (req, res, next) => {
 export const redirectIfAuthenticated = (req, res, next) => {
   try {
     if (req.session?.admin) {
-      return res.redirect("/");
+      return res.redirect("/dashboard");
     }
 
     next();

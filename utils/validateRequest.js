@@ -1,16 +1,19 @@
 import { validationResult } from "express-validator";
 
-const validateRequest = (req, res, next) => {
-  const errors = validationResult(req);
+const validateRequest = (view) => {
+  return (req, res, next) => {
+    const errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    return res.status(400).render("error", {
+    if (errors.isEmpty()) {
+      return next();
+    }
+
+    return res.status(400).render(view, {
       title: "Validation Error",
-      errors: errors.array(),
+      errors: errors.mapped(),
+      old: req.body,
     });
-  }
-
-  next();
+  };
 };
 
 export default validateRequest;
