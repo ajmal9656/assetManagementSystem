@@ -1,8 +1,4 @@
 const errorHandler = (err, req, res, next) => {
-  console.log("error present");
-  
-  console.error(err);
-
   const statusCode = err.statusCode || 500;
 
   if (req.xhr || req.headers.accept?.includes("application/json")) {

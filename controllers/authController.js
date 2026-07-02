@@ -17,8 +17,6 @@ export const login = asyncHandler(async (req, res) => {
       email: admin.email,
     };
 
-    console.log(req.session.admin);
-    
     res.redirect("/dashboard");
   } catch (error) {
     res.status(error.statusCode || 401).render("login", {

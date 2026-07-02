@@ -1,7 +1,5 @@
 export const isAuthenticated = (req, res, next) => {
   try {
-    console.log("entered auth mid");
-    
     if (req.session?.admin) {
       return next();
     }

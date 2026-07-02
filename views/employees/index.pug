@@ -47,12 +47,11 @@ block content
 
                     .col-md-4.text-end
 
-                        button.btn.btn-success(
-                            type="button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#addEmployeeModal"
+                        a.btn.btn-success(
+                            href="/employees/create"
                         )
                             | Add Employee
+
 
             table.table.table-bordered.table-hover
 
@@ -91,11 +90,6 @@ block content
                                     )
                                         | Edit
 
-                                    a.btn.btn-sm.btn-danger(
-                                        href=`/employees/delete/${employee.id}`
-                                    )
-                                        | Delete
-
                     else
 
                         tr
@@ -131,130 +125,3 @@ block content
 
                     button.btn.btn-secondary(disabled)
                         | Next
-
-    // ============================
-    // Add Employee Modal
-    // ============================
-
-    .modal.fade(
-        id="addEmployeeModal"
-        tabindex="-1"
-        aria-labelledby="addEmployeeModalLabel"
-        aria-hidden="true"
-    )
-
-        .modal-dialog
-
-            .modal-content
-
-                form(action="/employees/add" method="POST")
-
-                    .modal-header
-
-                        h5.modal-title(id="addEmployeeModalLabel")
-                            | Add Employee
-
-                        button.btn-close(
-                            type="button"
-                            data-bs-dismiss="modal"
-                        )
-
-                    .modal-body
-
-                        .mb-3
-
-                            label.form-label Employee Code
-
-                            input.form-control(
-                                type="text"
-                                name="employeeCode"
-                                required
-                            )
-
-                        .row
-
-                            .col-md-6
-
-                                .mb-3
-
-                                    label.form-label First Name
-
-                                    input.form-control(
-                                        type="text"
-                                        name="firstName"
-                                        required
-                                    )
-
-                            .col-md-6
-
-                                .mb-3
-
-                                    label.form-label Last Name
-
-                                    input.form-control(
-                                        type="text"
-                                        name="lastName"
-                                        required
-                                    )
-
-                        .mb-3
-
-                            label.form-label Email
-
-                            input.form-control(
-                                type="email"
-                                name="email"
-                                required
-                            )
-
-                        .mb-3
-
-                            label.form-label Phone
-
-                            input.form-control(
-                                type="text"
-                                name="phone"
-                            )
-
-                        .mb-3
-
-                            label.form-label Designation
-
-                            input.form-control(
-                                type="text"
-                                name="designation"
-                            )
-
-                        .mb-3
-
-                            label.form-label Branch
-
-                            select.form-select(
-                                name="branch"
-                                required
-                            )
-
-                                each branch in branches
-                                    option(value=branch)= branch
-
-                        .mb-3
-
-                            label.form-label Status
-
-                            select.form-select(name="status")
-
-                                each employeeStatusValue in employeeStatus
-                                    option(value=employeeStatusValue)= employeeStatusValue
-
-                    .modal-footer
-
-                        button.btn.btn-secondary(
-                            type="button"
-                            data-bs-dismiss="modal"
-                        )
-                            | Close
-
-                        button.btn.btn-success(
-                            type="submit"
-                        )
-                            | Save Employee
