@@ -260,6 +260,21 @@ function getOperationHandlers({
 
       return Model.count(options);
     },
+    aggregate: async () => {
+      const result = await Model.findAll({
+        where,
+        attributes,
+        include,
+        order,
+        group: groupBy ? [groupBy] : undefined,
+        raw: true,
+        logging: enableLogging
+          ? (sql) => console.log(`SQL (aggregate): ${sql}`)
+          : false,
+      });
+
+      return result;
+    },
   };
 }
 

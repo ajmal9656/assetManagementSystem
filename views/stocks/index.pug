@@ -1,0 +1,45 @@
+extends ../layouts/layout
+
+block content
+
+    h2.mb-4 Stock View
+
+    .card
+
+        .card-body
+
+            h5.mb-3 Stock Overview
+
+            table.table.table-bordered.table-hover
+
+                thead.table-light
+
+                    tr
+
+                        th Branch
+
+                        th.text-center Total Assets
+
+                        th.text-end Total Value (₹)
+
+                tbody
+
+                    each item in stock
+
+                        tr
+
+                            td= item.branch
+
+                            td.text-center= item.totalAssets
+
+                            td.text-end= Number(item.totalValue).toLocaleString("en-IN")
+
+                tfoot.table-light
+
+                    tr.fw-bold
+
+                        td Total
+
+                        td.text-center= totals.assets
+
+                        td.text-end= totals.value.toLocaleString("en-IN")
