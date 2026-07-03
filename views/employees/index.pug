@@ -2,9 +2,9 @@ extends ../layouts/layout
 
 block content
 
-    h2.mb-4 Employee Management
+    h2 Employee Management
 
-    .card
+    .card.mt-3
 
         .card-body
 
@@ -13,6 +13,7 @@ block content
                 .row.mb-3
 
                     .col-md-3
+
                         input.form-control(
                             type="text"
                             name="search"
@@ -21,6 +22,7 @@ block content
                         )
 
                     .col-md-3
+
                         select.form-select(name="status")
 
                             option(
@@ -42,20 +44,20 @@ block content
                                 | Inactive
 
                     .col-md-2
-                        button.btn.btn-primary.w-100(type="submit")
+
+                        button.btn.btn-primary(type="submit")
                             | Search
 
-                    .col-md-4.text-end
+                .mb-3
 
-                        a.btn.btn-success(
-                            href="/employees/create"
-                        )
-                            | Add Employee
+                    a.btn.btn-success(
+                        href="/employees/create"
+                    )
+                        | Add Employee
 
+            table.table.table-bordered
 
-            table.table.table-bordered.table-hover
-
-                thead.table-light
+                thead
 
                     tr
                         th Employee Code
@@ -63,7 +65,7 @@ block content
                         th Email
                         th Phone
                         th Status
-                        th(width="150") Action
+                        th Action
 
                 tbody
 
@@ -85,7 +87,7 @@ block content
 
                                 td
 
-                                    a.btn.btn-sm.btn-warning.me-2(
+                                    a.btn.btn-sm.btn-warning(
                                         href=`/employees/edit/${employee.id}`
                                     )
                                         | Edit
@@ -94,10 +96,10 @@ block content
 
                         tr
 
-                            td.text-center(colspan="6")
+                            td(colspan="6")
                                 | No employees found.
 
-            .d-flex.justify-content-between.align-items-center.mt-3
+            .mt-3
 
                 if pagination.currentPage > 1
 
@@ -111,7 +113,7 @@ block content
                     button.btn.btn-secondary(disabled)
                         | Previous
 
-                span
+                span.ms-3.me-3
                     | Page #{pagination.currentPage} of #{pagination.totalPages}
 
                 if pagination.currentPage < pagination.totalPages

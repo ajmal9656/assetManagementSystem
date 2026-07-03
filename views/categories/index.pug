@@ -2,28 +2,28 @@ extends ../layouts/layout
 
 block content
 
-    h2.mb-4 Asset Categories
+    h2 Asset Categories
 
-    .card
+    .card.mt-3
 
         .card-body
 
-            .mb-3.text-end
+            .mb-3
 
                 a.btn.btn-success(
                     href="/categories/create"
                 )
                     | Add Category
 
-            table.table.table-bordered.table-hover
+            table.table.table-bordered
 
-                thead.table-light
+                thead
 
                     tr
-                        th(width="80") #
+                        th #
                         th Category Name
                         th Description
-                        th(width="120") Action
+                        th Action
 
                 tbody
 
@@ -50,5 +50,5 @@ block content
 
                         tr
 
-                            td.text-center(colspan="4")
+                            td(colspan="4")
                                 | No categories found.
