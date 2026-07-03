@@ -285,7 +285,6 @@ export const checkFieldValueExist = async (
   id,
   extraCondition = {},
 ) => {
-  console.log("Starting execution of checkFieldValueExist");
   try {
     const Model = db[modelName];
     if (!Model) throw new Error(`Model '${modelName}' does not exist.`);
