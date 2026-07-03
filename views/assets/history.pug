@@ -2,42 +2,40 @@ extends ../layouts/layout
 
 block content
 
-    h2.mb-4 Asset History
+    h2 Asset History
 
-    .card
+    .card.mt-3
 
         .card-body
 
-            .row.mb-4
+            .mb-3
 
-                .col-md-5
+                select.form-select(
+                    id="assetId"
+                )
 
-                    select.form-select(
-                        id="assetId"
-                    )
+                    option(value="")
+                        | Select Asset
 
-                        option(value="")
-                            | Select Asset
+                    each asset in assets
 
-                        each asset in assets
+                        option(
+                            value=asset.id
+                            selected=selectedAsset == asset.id
+                        )
+                            | #{asset.make} #{asset.model} (#{asset.assetCode})
 
-                            option(
-                                value=asset.id
-                                selected=selectedAsset == asset.id
-                            )
-                                | #{asset.make} #{asset.model} (#{asset.assetCode})
+            .mb-3
 
-                .col-md-2
+                button.btn.btn-primary(
+                    type="button"
+                    onclick="viewHistory()"
+                )
+                    | View
 
-                    button.btn.btn-primary.w-100(
-                        type="button"
-                        onclick="viewHistory()"
-                    )
-                        | View
+            table.table.table-bordered
 
-            table.table.table-bordered.table-hover
-
-                thead.table-light
+                thead
 
                     tr
                         th Date
@@ -58,13 +56,9 @@ block content
                                 td= item.action
 
                                 td
-
                                     if item.employee
-
                                         | #{item.employee.firstName} #{item.employee.lastName} (#{item.employee.employeeCode})
-
                                     else
-
                                         | -
 
                                 td= item.remarks || "-"
@@ -73,7 +67,7 @@ block content
 
                         tr
 
-                            td.text-center(colspan="4")
+                            td(colspan="4")
                                 | No history found.
 
     script.
@@ -82,9 +76,7 @@ block content
             const assetId = document.getElementById("assetId").value;
 
             if (!assetId) {
-
                 alert("Please select an asset.");
-
                 return;
             }
 
