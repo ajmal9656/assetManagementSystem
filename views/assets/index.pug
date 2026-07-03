@@ -72,8 +72,11 @@ block content
                         th Category
                         th Make
                         th Model
+                        th Purchase Date
+                        th Purchase Price
+                        th Branch
                         th Status
-                        th(width="220") Actions
+                        th(width="240") Actions
 
                 tbody
 
@@ -93,6 +96,12 @@ block content
 
                                 td= asset.model
 
+                                td= asset.purchaseDate ? new Date(asset.purchaseDate).toLocaleDateString("en-GB") : "-"
+
+                                td= asset.purchasePrice != null ? Number(asset.purchasePrice).toLocaleString("en-IN") : "-"
+
+                                td= asset.branch
+
                                 td= asset.status
 
                                 td
@@ -111,12 +120,12 @@ block content
                                         )
                                             | Issue
 
-                                        button.btn.btn-sm.btn-danger(
+                                        button.btn.btn-sm.btn-dark(
                                             type="button"
                                             data-bs-toggle="modal"
-                                            data-bs-target=`#scrapAsset${asset.id}`
+                                            data-bs-target=`#repairAsset${asset.id}`
                                         )
-                                            | Scrap
+                                            | Repair
 
                                     else if asset.status === "ISSUED"
 
@@ -132,6 +141,27 @@ block content
                                         )
                                             | Return
 
+                                    else if asset.status === "UNDER_REPAIR"
+
+                                        a.btn.btn-sm.btn-warning.me-1(
+                                            href=`/assets/edit/${asset.id}`
+                                        )
+                                            | Edit
+
+                                        button.btn.btn-sm.btn-success.me-1(
+                                            type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target=`#makeInStockAsset${asset.id}`
+                                        )
+                                            | Mark In Stock
+
+                                        button.btn.btn-sm.btn-danger(
+                                            type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target=`#scrapAsset${asset.id}`
+                                        )
+                                            | Scrap
+
                                     else if asset.status === "SCRAPPED"
 
                                         span.text-danger.fw-bold
@@ -146,7 +176,7 @@ block content
 
                         tr
 
-                            td.text-center(colspan="7")
+                            td.text-center(colspan="10")
                                 | No assets found.
 
             .d-flex.justify-content-between.align-items-center.mt-3

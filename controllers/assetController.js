@@ -4,12 +4,7 @@ import { ASSET_STATUS, BRANCHES } from "../constants/constant.js";
 import { validationResult } from "express-validator";
 
 export const getAssets = asyncHandler(async (req, res) => {
-  const {
-    page = 1,
-    search = "",
-    status = "",
-    categoryId = "",
-  } = req.query;
+  const { page = 1, search = "", status = "", categoryId = "" } = req.query;
 
   const data = await assetService.getAssets({
     page,
@@ -38,7 +33,7 @@ export const showCreateAsset = asyncHandler(async (req, res) => {
     title: "Add Asset",
     categories,
     branches: BRANCHES,
-    today
+    today,
   });
 });
 
@@ -57,10 +52,7 @@ export const createAsset = asyncHandler(async (req, res) => {
     });
   }
 
-  const result = await assetService.createAsset(
-    req.body,
-    req.session.admin.id
-  );
+  const result = await assetService.createAsset(req.body, req.session.admin.id);
 
   if (!result.success) {
     const categories = await assetService.getCategories();
@@ -91,7 +83,6 @@ export const showEditAsset = asyncHandler(async (req, res) => {
   });
 });
 
-
 export const updateAsset = asyncHandler(async (req, res) => {
   const validationErrors = validationResult(req);
 
@@ -104,7 +95,7 @@ export const updateAsset = asyncHandler(async (req, res) => {
   const result = await assetService.updateAsset(
     req.params.id,
     req.body,
-    req.session.admin.id
+    req.session.admin.id,
   );
 
   if (!result.success) {

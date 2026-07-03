@@ -1,12 +1,10 @@
 import { Op } from "sequelize";
-import { checkFieldValueExist, performModelQuery } from "../utils/commonQuery.js";
+import {
+  checkFieldValueExist,
+  performModelQuery,
+} from "../utils/commonQuery.js";
 
-export const getAssets = async ({
-  page,
-  search,
-  status,
-  categoryId,
-}) => {
+export const getAssets = async ({ page, search, status, categoryId }) => {
   const where = {};
 
   if (search) {
@@ -50,13 +48,9 @@ export const getAssets = async ({
     order: [["createdAt", "DESC"]],
   });
 
-  const categories = await performModelQuery(
-    "AssetCategory",
-    "readAll",
-    {
-      order: [["name", "ASC"]],
-    }
-  );
+  const categories = await performModelQuery("AssetCategory", "readAll", {
+    order: [["name", "ASC"]],
+  });
 
   return {
     assets: assets.result,
@@ -69,15 +63,10 @@ export const getAssets = async ({
   };
 };
 
-
 export const getCategories = async () => {
-  const categories = await performModelQuery(
-    "AssetCategory",
-    "readAll",
-    {
-      order: [["name", "ASC"]],
-    }
-  );
+  const categories = await performModelQuery("AssetCategory", "readAll", {
+    order: [["name", "ASC"]],
+  });
 
   return categories.result;
 };
@@ -89,7 +78,7 @@ export const createAsset = async (data, adminId) => {
     const serialExists = await checkFieldValueExist(
       "Asset",
       "serialNumber",
-      data.serialNumber
+      data.serialNumber,
     );
 
     if (serialExists) {
@@ -113,9 +102,7 @@ export const createAsset = async (data, adminId) => {
   let assetCode = "AST001";
 
   if (lastAsset) {
-    const number = Number(
-      lastAsset.assetCode.replace("AST", "")
-    );
+    const number = Number(lastAsset.assetCode.replace("AST", ""));
 
     assetCode = `AST${String(number + 1).padStart(3, "0")}`;
   }
@@ -162,7 +149,7 @@ export const updateAsset = async (id, data, adminId) => {
       "Asset",
       "serialNumber",
       data.serialNumber,
-      id
+      id,
     );
 
     if (serialExists) {

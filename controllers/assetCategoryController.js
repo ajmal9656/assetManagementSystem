@@ -6,7 +6,6 @@ export const getCategories = asyncHandler(async (req, res) => {
   const page = Number(req.query.page) || 1;
 
   const categories = await categoryService.getCategories(page);
-console.log(categories);
 
   res.render("categories/index", {
     title: "Asset Categories",
@@ -18,7 +17,6 @@ console.log(categories);
     },
   });
 });
-
 
 export const showCreateCategory = asyncHandler(async (req, res) => {
   res.render("categories/create", {
@@ -37,10 +35,8 @@ export const createCategory = asyncHandler(async (req, res) => {
 
   const result = await categoryService.createCategory(
     req.body,
-    req.session.admin.id
+    req.session.admin.id,
   );
-  console.log(res);
-  
 
   if (!result.success) {
     errors = {
@@ -56,12 +52,9 @@ export const createCategory = asyncHandler(async (req, res) => {
       old: req.body,
     });
   }
-  console.log("red");
-  
 
   res.redirect("/categories");
 });
-
 
 export const showEditCategory = asyncHandler(async (req, res) => {
   const category = await categoryService.getCategoryById(req.params.id);
@@ -84,7 +77,7 @@ export const updateCategory = asyncHandler(async (req, res) => {
   const result = await categoryService.updateCategory(
     req.params.id,
     req.body,
-    req.session.admin.id
+    req.session.admin.id,
   );
 
   if (!result.success) {
