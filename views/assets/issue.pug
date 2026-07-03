@@ -1,0 +1,81 @@
+extends ../layouts/layout
+
+block content
+
+    h2.mb-4 Issue Asset
+
+    .card
+
+        .card-body
+
+            if error
+                .alert.alert-danger= error
+
+            form(action=`/assets/issue/${asset.id}` method="POST")
+
+                .mb-3
+
+                    label.form-label Asset
+
+                    input.form-control(
+                        type="text"
+                        value=`${asset.make} ${asset.model} (${asset.serialNumber})`
+                        readonly
+                    )
+
+                input(
+                    type="hidden"
+                    name="action"
+                    value="ISSUE"
+                )
+
+                .mb-3
+
+                    label.form-label Employee
+
+                    select.form-select(name="employeeId")
+
+                        option(value="")
+                            | Select Employee
+
+                        each employee in employees
+
+                            option(
+                                value=employee.id
+                                selected=old && old.employeeId == employee.id
+                            )
+                                | #{employee.employeeCode} - #{employee.firstName} #{employee.lastName}
+
+                    if errors && errors.employeeId
+                        .text-danger.small.mt-1= errors.employeeId.msg
+
+                .mb-3
+
+                     label.form-label Issue Date
+
+                     input.form-control(
+                        type="text"
+                        value=today
+                        readonly
+                    )
+
+                .mb-3
+
+                    label.form-label Remarks
+
+                    textarea.form-control(
+                        name="remarks"
+                        rows="3"
+                    )= old && old.remarks ? old.remarks : ""
+
+                .d-flex.justify-content-end.gap-2
+
+                    a.btn.btn-secondary(
+                        href="/assets"
+                    )
+                        | Cancel
+
+                    button.btn.btn-primary(
+                        type="submit"
+                    )
+                        | Issue Asset

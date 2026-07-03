@@ -113,17 +113,14 @@ block content
                                         )
                                             | Edit
 
-                                        button.btn.btn-sm.btn-primary.me-1(
-                                            type="button"
-                                            data-bs-toggle="modal"
-                                            data-bs-target=`#issueAsset${asset.id}`
+                                        a.btn.btn-sm.btn-primary.me-1(
+                                            href=`/assets/issue/${asset.id}`
                                         )
                                             | Issue
 
                                         button.btn.btn-sm.btn-dark(
                                             type="button"
-                                            data-bs-toggle="modal"
-                                            data-bs-target=`#repairAsset${asset.id}`
+                                            onclick=`confirmAssetAction(${asset.id}, 'REPAIR')`
                                         )
                                             | Repair
 
@@ -134,10 +131,8 @@ block content
                                         )
                                             | Edit
 
-                                        button.btn.btn-sm.btn-info(
-                                            type="button"
-                                            data-bs-toggle="modal"
-                                            data-bs-target=`#returnAsset${asset.id}`
+                                        a.btn.btn-sm.btn-info(
+                                            href=`/assets/return/${asset.id}`
                                         )
                                             | Return
 
@@ -150,15 +145,13 @@ block content
 
                                         button.btn.btn-sm.btn-success.me-1(
                                             type="button"
-                                            data-bs-toggle="modal"
-                                            data-bs-target=`#makeInStockAsset${asset.id}`
+                                            onclick=`confirmAssetAction(${asset.id}, 'MAKE_IN_STOCK')`
                                         )
                                             | Mark In Stock
 
                                         button.btn.btn-sm.btn-danger(
                                             type="button"
-                                            data-bs-toggle="modal"
-                                            data-bs-target=`#scrapAsset${asset.id}`
+                                            onclick=`confirmAssetAction(${asset.id}, 'SCRAP')`
                                         )
                                             | Scrap
 
@@ -207,3 +200,81 @@ block content
 
                     button.btn.btn-secondary(disabled)
                         | Next
+
+    form(
+        id="assetActionForm"
+        method="POST"
+        style="display:none"
+    )
+
+        input(
+            type="hidden"
+            name="action"
+            id="assetAction"
+        )
+
+        input(
+           type="hidden"
+           name="remarks"
+           id="assetRemarks"
+        )
+
+    script.
+
+        function confirmAssetAction(assetId, action) {
+
+            let text = "";
+
+            switch (action) {
+
+                case "REPAIR":
+                    text = "Are you sure you want to send this asset for repair?";
+                    break;
+
+                case "SCRAP":
+                    text = "Are you sure you want to scrap this asset?";
+                    break;
+
+                case "MAKE_IN_STOCK":
+                    text = "Are you sure you want to mark this asset as In Stock?";
+                    break;
+            }
+
+            swal("Are you sure?", {
+                text: text,
+                content:{
+                    element:"input",
+                    attributes: {
+                        placeholder:"Enter Remarks",
+                        type:"text"
+                    }
+                },
+                icon: "warning",
+                buttons: ["No", "Yes"],
+                dangerMode: action === "SCRAP"
+            }).then((remarks) => {
+
+                if (remarks === null) {
+                    return; // User clicked No
+                }
+
+                if (!remarks.trim()) {
+                    swal("Remarks are required.", {
+                        icon: "error",
+                    });
+                    return;
+                }
+
+                const form = document.getElementById("assetActionForm");
+
+                form.action = "/assets/scrapOrRepairOrStock/" + assetId;
+
+                document.getElementById("assetAction").value = action;
+
+                document.getElementById("assetRemarks").value = remarks.trim();
+
+                form.submit(); 
+
+            });
+
+        }
