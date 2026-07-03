@@ -38,7 +38,7 @@ export const getAssets = async ({ page, search, status, categoryId }) => {
   const assets = await performModelQuery("Asset", "read", {
     where,
     page: Number(page),
-    limit: 10,
+    limit: 6,
     include: [
       {
         model: "AssetCategory",

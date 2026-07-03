@@ -13,7 +13,7 @@ export const getCategories = asyncHandler(async (req, res) => {
     pagination: {
       currentPage: categories.current_page,
       totalPages: categories.total_pages,
-      limit: 10,
+      limit: 6,
     },
   });
 });
