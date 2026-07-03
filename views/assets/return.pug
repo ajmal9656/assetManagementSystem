@@ -1,0 +1,90 @@
+extends ../layouts/layout
+
+block content
+
+    h2.mb-4 Return Asset
+
+    .card
+
+        .card-body
+
+            if error
+                .alert.alert-danger= error
+
+            form(action=`/assets/return/${asset.id}` method="POST")
+
+                .mb-3
+
+                    label.form-label Asset
+
+                    input.form-control(
+                        type="text"
+                        value=`${asset.make} ${asset.model} (${asset.serialNumber})`
+                        readonly
+                    )
+
+                .mb-3
+
+                    label.form-label Issued To
+
+                    input.form-control(
+                        type="text"
+                        value=`${employee.employeeCode} - ${employee.firstName} ${employee.lastName}`
+                        readonly
+                    )
+
+                input(
+                    type="hidden"
+                    name="employeeId"
+                    value=employee.id
+                )
+
+                .mb-3
+
+                    label.form-label Return Date
+
+                    input.form-control(
+                        type="date"
+                        value=today
+                        readOnly
+                    )
+
+                .mb-3
+
+                    label.form-label Return Reason
+
+                    select.form-select(name="reason")
+
+                        option(value="")
+                            | Select Reason
+
+                        each reason in returnReasons
+
+                            option(
+                                value=reason
+                                selected=old && old.reason==reason
+                            )= reason
+
+                    if errors && errors.reason
+                        .text-danger.small.mt-1= errors.reason.msg
+
+                .mb-3
+
+                    label.form-label Remarks
+
+                    textarea.form-control(
+                        name="remarks"
+                        rows="3"
+                    )= old && old.remarks ? old.remarks : ""
+
+                .d-flex.justify-content-end.gap-2
+
+                    a.btn.btn-secondary(
+                        href="/assets"
+                    )
+                        | Cancel
+
+                    button.btn.btn-success(
+                        type="submit"
+                    )
+                        | Return Asset

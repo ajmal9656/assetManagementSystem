@@ -1,7 +1,7 @@
 import { Op, Sequelize } from "sequelize";
 import * as db from "../models/index.js";
 
-const enableLogging = process.env.ENABLE_QUERY === "YES";
+const enableLogging = process.env.ENABLE_QUERY === "NO";
 
 export const performModelQuery = async (modelName, operation, data) => {
   try {

@@ -1,0 +1,92 @@
+extends ../layouts/layout
+
+block content
+
+    h2.mb-4 Asset History
+
+    .card
+
+        .card-body
+
+            .row.mb-4
+
+                .col-md-5
+
+                    select.form-select(
+                        id="assetId"
+                    )
+
+                        option(value="")
+                            | Select Asset
+
+                        each asset in assets
+
+                            option(
+                                value=asset.id
+                                selected=selectedAsset == asset.id
+                            )
+                                | #{asset.make} #{asset.model} (#{asset.assetCode})
+
+                .col-md-2
+
+                    button.btn.btn-primary.w-100(
+                        type="button"
+                        onclick="viewHistory()"
+                    )
+                        | View
+
+            table.table.table-bordered.table-hover
+
+                thead.table-light
+
+                    tr
+                        th Date
+                        th Action
+                        th Employee
+                        th Remarks
+
+                tbody
+
+                    if history && history.length
+
+                        each item in history
+
+                            tr
+
+                                td= item.transactionDate ? new Date(item.transactionDate).toLocaleDateString("en-GB") : "-"
+
+                                td= item.action
+
+                                td
+
+                                    if item.employee
+
+                                        | #{item.employee.firstName} #{item.employee.lastName} (#{item.employee.employeeCode})
+
+                                    else
+
+                                        | -
+
+                                td= item.remarks || "-"
+
+                    else
+
+                        tr
+
+                            td.text-center(colspan="4")
+                                | No history found.
+
+    script.
+        function viewHistory() {
+
+            const assetId = document.getElementById("assetId").value;
+
+            if (!assetId) {
+
+                alert("Please select an asset.");
+
+                return;
+            }
+
+            window.location.href = "/assets/history/" + assetId;
+        }
